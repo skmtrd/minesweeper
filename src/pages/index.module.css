@@ -43,26 +43,28 @@
 .informBoardStyle {
   width: 270px;
   height: 70px;
-  margin-top: 6.6%;
-  outline: 5px outset #7f7f7f;
+  margin-top: 21px;
+  outline: 7px outset #7f7f7f;
   outline-offset: 0;
-}
-
-.whiteLineInfoBottom {
-  position: absolute;
-  width: 280px;
-  height: 81px;
-  margin-top: 15.5px;
-  clip-path: polygon(1.8% 92.5%, 99.3% 92.5%, 99% 98%, 0.4% 98%);
-  background-color: white;
 }
 
 .whiteLineInfoRight {
   position: absolute;
-  width: 280.5px;
-  height: 81px;
-  margin-top: 15.5px;
-  clip-path: polygon(98% 7.3%, 99.5% 2.1%, 99.5% 98%, 98% 98%);
+  display: flex;
+  width: 284px;
+  height: 83.8px;
+  margin: 14px;
+  clip-path: polygon(97.4% 8.75%, 100% 0, 100% 100%, 97.4% 100%);
+  background-color: white;
+}
+
+.whiteLineInfoBottom {
+  position: absolute;
+  display: flex;
+  width: 284px;
+  height: 83.8px;
+  margin: 14px;
+  clip-path: polygon(2.6% 91.5%, 100% 91.5%, 100% 100%, 0 100%);
   background-color: white;
 }
 
@@ -71,27 +73,27 @@
   flex-wrap: wrap;
   width: 270px;
   height: 270px;
-  margin-top: 7%;
+  margin-top: 23px;
   background-color: #c6c6c6;
-  outline: 5px outset #7f7f7f;
-  outline-offset: -1px;
+  outline: 7px outset #7f7f7f;
+  outline-offset: 0;
 }
 
 .whiteLineBombBottom {
   position: absolute;
-  width: 278px;
-  height: 280px;
-  margin-top: 109px;
-  clip-path: polygon(1.6% 98.1%, 101% 98.1%, 101% 99.69%, 0.14% 99.69%);
+  width: 284px;
+  height: 284px;
+  margin-top: 108px;
+  clip-path: polygon(2.5% 97%, 98.5% 97%, 98% 99.6%, 0% 99.6%);
   background-color: white;
 }
 
 .whiteLineBombRight {
   position: absolute;
-  width: 280.5px;
-  height: 280px;
-  margin-top: 109px;
-  clip-path: polygon(98% 1.5%, 99.5% 0%, 99.5% 99.5%, 98% 99.5%);
+  width: 284px;
+  height: 284px;
+  margin-top: 108px;
+  clip-path: polygon(97.4% 2.3%, 99.8% 0, 999.6% 99.6%, 97.4% 99.6%);
   background-color: white;
 }
 
