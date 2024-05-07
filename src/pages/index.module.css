@@ -62,9 +62,9 @@
   position: absolute;
   display: flex;
   width: 284px;
-  height: 83.8px;
+  height: 84px;
   margin: 14px;
-  clip-path: polygon(2.6% 91.5%, 100% 91.5%, 100% 100%, 0 100%);
+  clip-path: polygon(2.6% 91.2%, 100% 91.2%, 100% 100%, 0 100%);
   background-color: white;
 }
 
