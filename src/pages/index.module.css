@@ -110,16 +110,45 @@
 
 .imageStyle {
   display: flex;
-  width: 20px;
-  height: 20px;
-  background: url('~/src/assets/images/iconsSS.png') no-repeat;
+  width: 22px;
+  height: 22px;
+  background: url('~/src/assets/images/iconsS.png') no-repeat;
 }
 
-.frontBoardStyel {
-  position: relative;
+.frontBoardStyle {
+  position: absolute;
   display: flex;
   flex-wrap: wrap;
   width: 270px;
   height: 270px;
-  margin-top: 7%;
+  margin-top: 114px;
+}
+
+.blindCellStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #c6c6c6;
+  outline: solid;
+  outline-width: 3.8px;
+  outline-color: #7f7f7f;
+  outline-offset: -3.8px;
+}
+
+.whiteLineBlindUp {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  clip-path: polygon(0 0, 100% 0, 89.7% 12%, 0 12%);
+  background-color: white;
+}
+
+.whiteLineBlindLeft {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  clip-path: polygon(0 0, 12% 12%, 12% 89.7%, 0 100%);
+  background-color: white;
 }
