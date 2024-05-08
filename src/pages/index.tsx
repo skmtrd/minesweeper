@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './index.module.css';
+import { setFlagsFromString } from 'v8';
 
 const getRandomIntNumber = (min, max) => {
   return [
@@ -7,12 +8,54 @@ const getRandomIntNumber = (min, max) => {
     Math.floor(Math.random() * (max - min + 1)) + min,
   ];
 };
+const directions = [
+  [1, 0],
+  [1, 1],
+  [0, 1],
+  [-1, 1],
+  [-1, 0],
+  [-1, -1],
+  [0, -1],
+  [1, -1],
+];
 
-// const ddddddddddddddddddddddddd;
+const plantBombs = (map: number[][], x: number, y: number) => {
+  const plantPlace: number[][] = [];
+  while (plantPlace.length < 10) {
+    const preBombPlace: number[] = getRandomIntNumber(0, 8);
+    if (preBombPlace[0] === y && preBombPlace[1] === x) continue;
+    const checkOverlap = [0];
+    for (const item of plantPlace) {
+      if (item[0] === preBombPlace[0] && item[1] === preBombPlace[1]) checkOverlap[0]++;
+    }
+    if (checkOverlap[0] !== 0) continue;
+    plantPlace.push(preBombPlace);
+  }
+  for (const bomb of plantPlace) {
+    map[bomb[0]][bomb[1]] = 1;
+  }
+  return map;
+};
+
+const determineNumber = (map: number[][]) => {
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 9; x++) {
+      if (map[y][x] === 1) continue;
+      const aroundBombNumber: number[] = [0];
+      for (const dir of directions) {
+        if (map[y + dir[0]] !== undefined && map[y + dir[0]][x + dir[1]] === 1) {
+          aroundBombNumber[0]--;
+        }
+      }
+      map[y][x] = aroundBombNumber[0];
+    }
+  }
+  return map;
+};
 
 const Home = () => {
   const [bombMap, setBombMap] = useState([
-    [1, -1, -2, -3, -4, -5, -6, -7, -8],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,18 +66,28 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   const [frontBoard, setFrontBoard] = useState([
-    [1, 2, 0, -1, -1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, -1, -1, 0, 0, 0],
-    [0, 0, 0, 0, -1, -1, 0, 0, 0],
-    [0, 0, 0, 0, -1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
   ]);
 
-  const clickHundler = (x: number, y: number) => {};
+  const clickHundler = (x: number, y: number) => {
+    const newBombMap = structuredClone(bombMap);
+    const newFrontBoard = structuredClone(frontBoard);
+    const plantedBombMap = plantBombs(newBombMap, x, y);
+    // console.log(plantedBombMap);
+    const reloadedBombMap = determineNumber(plantedBombMap);
+    // console.log(reloadedBombMap);
+    // setBombMap(plantedBombMap);
+    setBombMap(reloadedBombMap);
+    setFrontBoard(newFrontBoard);
+  };
 
   return (
     <div className={styles.container}>
