@@ -8,6 +8,8 @@ const getRandomIntNumber = (min, max) => {
   ];
 };
 
+// const ddddddddddddddddddddddddd;
+
 const Home = () => {
   const [bombMap, setBombMap] = useState([
     [1, -1, -2, -3, -4, -5, -6, -7, -8],
@@ -21,16 +23,18 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   const [frontBoard, setFrontBoard] = useState([
+    [1, 2, 0, -1, -1, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, -1, -1, 0, 0, 0],
+    [0, 0, 0, 0, -1, -1, 0, 0, 0],
+    [0, 0, 0, 0, -1, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+
+  const clickHundler = (x: number, y: number) => {};
 
   return (
     <div className={styles.container}>
@@ -110,9 +114,32 @@ const Home = () => {
         <div className={styles.frontBoardStyle}>
           {frontBoard.map((row, y) =>
             row.map((color, x) => (
-              <div className={styles.blindCellStyle} key={`${x}-${y}`}>
-                <div className={styles.whiteLineBlindUp} />
-                <div className={styles.whiteLineBlindLeft} />
+              <div
+                className={styles.blindCellStyle}
+                style={{
+                  outlineColor: color === -1 ? '#7f7f7f' : '#7f7f7f ',
+                  outlineWidth: color === -1 ? '2px' : '3.8px',
+                  outlineOffset: color === -1 ? '-1px' : '-3.8px',
+                  background: color === -1 ? ' rgba(255, 105, 212, 0)' : 'rgba(198, 198, 198)',
+                }}
+                key={`${x}-${y}`}
+                onClick={() => clickHundler(x, y)}
+              >
+                {color === 1 && (
+                  <div className={styles.imageStyle} style={{ backgroundPosition: `-176px 0px` }} />
+                )}
+                {color === 2 && (
+                  <div className={styles.imageStyle} style={{ backgroundPosition: `-198px 0px` }} />
+                )}
+
+                <div
+                  className={styles.whiteLineBlindUp}
+                  style={{ zIndex: color === -1 ? -1 : 1 }}
+                />
+                <div
+                  className={styles.whiteLineBlindLeft}
+                  style={{ zIndex: color === -1 ? -1 : 1 }}
+                />
               </div>
             )),
           )}

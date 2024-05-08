@@ -103,9 +103,6 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  outline: solid;
-  outline-width: 0.1px;
-  outline-color: #7b7a7a;
 }
 
 .imageStyle {
@@ -130,7 +127,8 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  background-color: #c6c6c6;
+
+  /* background-color: #c6c6c6; */
   outline: solid;
   outline-width: 3.8px;
   outline-color: #7f7f7f;
