@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styles from './index.module.css';
-import { finished } from 'stream';
 
 const getRandomIntNumber = (min: number, max: number) => {
   return [
