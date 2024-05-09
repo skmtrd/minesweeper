@@ -17,6 +17,7 @@ const directions = [
   [0, -1],
   [1, -1],
 ];
+const clickCount: number[] = [0, 0];
 const plantPlace: number[][] = [];
 const explodedCell: number[][] = [[]];
 const initializeCount = [0];
@@ -126,7 +127,7 @@ const Home = () => {
   ]);
   initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
   const clickHundler = (x: number, y: number) => {
-    console.log('pass');
+    clickCount[0]++;
     const newBombMap = structuredClone(bombMap);
     const newFrontBoard = structuredClone(frontBoard);
     const reloadedBombMap = createBombMap(newBombMap, x, y);
@@ -135,6 +136,7 @@ const Home = () => {
     setFrontBoard(crushedFrontBoard);
   };
   const handleRightClick = (x: number, y: number, event: React.MouseEvent<HTMLDivElement>) => {
+    clickCount[1]++;
     event.preventDefault();
     const newFrontBoard = structuredClone(frontBoard);
     newFrontBoard[y][x] = frontBoard[y][x] === 0 ? 1 : 0;
@@ -207,6 +209,14 @@ const Home = () => {
               </div>
             )),
           )}
+        </div>
+      </div>
+      <div
+        className={styles.scoreBoardStyle}
+        style={{ visibility: explodedCell[0].length !== 0 ? 'visible' : 'hidden' }}
+      >
+        <div className={styles.scoreBoardStringStyle}>
+          クリック数 : {clickCount[0]}+{clickCount[1]}
         </div>
       </div>
     </div>

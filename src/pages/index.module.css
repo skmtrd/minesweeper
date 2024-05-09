@@ -1,12 +1,13 @@
 .container {
   display: flex;
-  flex-direction: column;
+
+  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
-  background-color: #e4e4e4;
+  background-color: #fff;
 }
 
 .baseDisplayStyle {
@@ -16,6 +17,7 @@
   align-items: center;
   width: 320px;
   height: 420px;
+  background-color: #c6c6c6;
   border-color: #fff #7f7f7f #7f7f7f #fff;
   border-style: solid;
   border-width: 7px;
@@ -72,7 +74,7 @@
   flex-wrap: wrap;
   width: 270px;
   height: 270px;
-  margin-top: 135px;
+  margin-top: 134px;
 }
 
 .blindCellStyle {
@@ -83,10 +85,10 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  background-color: #e4e4e4;
+  background-color: #c6c6c6;
   border-color: #fff#7f7f7f#7f7f7f #fff;
   border-style: solid;
-  border-width: 3px;
+  border-width: 4px;
 }
 
 .whiteLineBlindUp {
@@ -103,4 +105,27 @@
   height: 30px;
   clip-path: polygon(0 0, 12% 12%, 12% 89.7%, 0 100%);
   background-color: white;
+}
+
+.scoreBoardStyle {
+  box-sizing: content-box;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 200px;
+  height: 250px;
+  margin-left: 70px;
+  background-color: #f8f8f8;
+  border: solid;
+  border-color: #fff #d7d7d7 #d7d7d7 #fff;
+  box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
+}
+
+.scoreBoardStringStyle {
+  width: 180px;
+  height: 40px;
+  margin-top: 10%;
+  font-size: 15px;
+
+  /* border: solid; */
 }
