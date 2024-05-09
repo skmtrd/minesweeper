@@ -58,6 +58,9 @@ const crushCell = (map: number[][], frontBoard: number[][], x: number, y: number
   if (map[y][x] === 1) {
     frontBoard[y][x] = -1;
     explodedCell[0] = [y, x];
+    for (const point of plantPlace) {
+      frontBoard[point[0]][point[1]] = -1;
+    }
     return frontBoard;
   }
   if (map[y][x] < 0) {
