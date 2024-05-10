@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
 const getRandomIntNumber = (min: number, max: number) => {
@@ -7,7 +7,7 @@ const getRandomIntNumber = (min: number, max: number) => {
     Math.floor(Math.random() * (max - min + 1)) + min,
   ];
 };
-
+const n = [0];
 const initialArray = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,6 +29,19 @@ const directions = [
   [0, -1],
   [1, -1],
 ];
+const imageList = [
+  styles.degiNum0,
+  styles.degiNum1,
+  styles.degiNum2,
+  styles.degiNum3,
+  styles.degiNum4,
+  styles.degiNum5,
+  styles.degiNum6,
+  styles.degiNum7,
+  styles.degiNum8,
+  styles.degiNum9,
+  styles.degiNum10,
+];
 const faceImage = [0];
 const finishChecker = [0];
 const allBombNum = [10];
@@ -39,10 +52,15 @@ const plantPlace: number[][] = [];
 const explodedCell: number[][] = [[]];
 const initializeCount = [0];
 const crushPoint: number[][] = [];
+const preBombCount: number[][] = [[0]];
+const restBombCount: number[] = [];
+const isolatedRestBombCount: string[] = ['', '', ''];
+
 const calculateScore = (frontBoard: number[][]) => {
   frontBoardCount[0] = frontBoard.flat().filter((cell) => cell === -1).length;
   frontBoardCount[1] = frontBoard.flat().filter((cell) => cell === 0).length;
   frontBoardCount[2] = frontBoard.flat().filter((cell) => cell === 1).length;
+  preBombCount[0][0] = bombCount[0] - frontBoardCount[2];
   if (
     frontBoardCount[0] + frontBoardCount[1] + frontBoardCount[2] - allBombNum[0] ===
     frontBoardCount[0]
@@ -50,6 +68,24 @@ const calculateScore = (frontBoard: number[][]) => {
     finishChecker[0]++;
     faceImage[0] = 1;
   }
+  restBombCount[0] = bombCount[0] - frontBoardCount[2];
+  isolatedRestBombCount.fill('');
+  if (restBombCount[0] >= 10) {
+    console.log('pass');
+    isolatedRestBombCount[1] = String(restBombCount[0])[0];
+    isolatedRestBombCount[2] = String(restBombCount[0])[1];
+  } else if (restBombCount[0] < 10 && restBombCount[0] >= 0) {
+    isolatedRestBombCount[2] = String(restBombCount[0])[0];
+  } else if (restBombCount[0] > -10) {
+    isolatedRestBombCount[1] = '10';
+    isolatedRestBombCount[2] = String(restBombCount[0])[1];
+  } else {
+    isolatedRestBombCount[0] = '10';
+    isolatedRestBombCount[1] = String(restBombCount[0])[1];
+    isolatedRestBombCount[2] = String(restBombCount[0])[2];
+  }
+  console.log(restBombCount);
+  console.log(isolatedRestBombCount);
 };
 const resetSomeArray = () => {
   clickCount.fill(0);
@@ -170,6 +206,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
+  console.log(n[0]);
   const resetButtonHundler = () => {
     resetSomeArray();
     setBombMap(initialArray);
@@ -207,7 +244,11 @@ const Home = () => {
     <div className={styles.container}>
       <div className={styles.baseDisplayStyle}>
         <div className={styles.informBoardStyle}>
-          <div className={styles.numberDisplayLeftStyle}>{bombCount[0] - frontBoardCount[2]}</div>
+          <div className={styles.numberDisplayLeftStyle}>
+            <div className={imageList[Number(isolatedRestBombCount[0])]} />
+            <div className={imageList[Number(isolatedRestBombCount[1])]} />
+            <div className={imageList[Number(isolatedRestBombCount[2])]} />
+          </div>
           <div className={styles.faceButtomBackground} />
           <div className={styles.faceButtom} onClick={() => resetButtonHundler()}>
             <div
