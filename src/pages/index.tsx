@@ -414,7 +414,7 @@ const Home = () => {
 
   const clickHundler = (x: number, y: number) => {
     startTimer();
-    if (finishChecker[0] !== 0 || frontBoard[y][x] === 1) return;
+    if (finishChecker[0] !== 0) return;
     if (flagMode[0] === -1) {
       handleRightClick(x, y, new MouseEvent('click'));
       return;
