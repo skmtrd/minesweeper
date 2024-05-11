@@ -419,6 +419,7 @@ const Home = () => {
       handleRightClick(x, y, new MouseEvent('click'));
       return;
     }
+    if (frontBoard[y][x] === 1) return;
     clickCount[0]++;
     const newBombMap = structuredClone(bombMap);
     const newFrontBoard = structuredClone(frontBoard);
