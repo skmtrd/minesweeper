@@ -471,9 +471,15 @@ const Home = () => {
       </div>
       <div
         className={styles.baseDisplayStyle}
-        style={{ width: 50 + 30 * mapWidth[0], height: 150 + 30 * mapHeight[0] }}
+        style={{
+          width: mapWidth[0] < 9 ? 320 : 50 + 30 * mapWidth[0],
+          height: mapHeight[0] < 9 ? 420 : 150 + 30 * mapHeight[0],
+        }}
       >
-        <div className={styles.informBoardStyle} style={{ width: 30 * mapWidth[0] }}>
+        <div
+          className={styles.informBoardStyle}
+          style={{ width: mapWidth[0] < 9 ? 270 : 30 * mapWidth[0] }}
+        >
           <div className={styles.numberDisplayLeftStyle}>
             <div className={imageList[Number(isolatedRestBombCount[0])]} />
             <div className={imageList[Number(isolatedRestBombCount[1])]} />
