@@ -187,6 +187,16 @@ const plantBombs = (map: number[][], x: number, y: number) => {
     const preBombPlace: number[] = getRandomIntNumber(0, mapWidth[0] - 1);
     if (preBombPlace[0] >= mapHeight[0]) continue;
     if (preBombPlace[0] === y && preBombPlace[1] === x) continue;
+    const checkAround = [0];
+    for (const dir of directions) {
+      if (map[preBombPlace[0] + dir[0]] === undefined) continue;
+      if (preBombPlace[0] === y + dir[0] && preBombPlace[1] === x + dir[1]) {
+        checkAround[0]++;
+        break;
+      }
+    }
+    if (checkAround[0] !== 0) continue;
+
     const checkOverlap = [0];
     for (const item of plantPlace) {
       if (item[0] === preBombPlace[0] && item[1] === preBombPlace[1]) checkOverlap[0]++;
