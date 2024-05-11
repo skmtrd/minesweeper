@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { ChildProcess } from 'child_process';
 
+const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 const getRandomIntNumber = (min: number, max: number) => {
   return [
     Math.floor(Math.random() * (max - min + 1)) + min,
@@ -255,6 +257,19 @@ const Home = () => {
     stopTimer();
     resetTimer();
     currentLevel[0] = level;
+    if (level === 0) {
+      allBombNum[0] = 10;
+      mapWidth[0] = 9;
+      mapHeight[0] = 9;
+    } else if (level === 1) {
+      allBombNum[0] = 40;
+      mapWidth[0] = 16;
+      mapHeight[0] = 16;
+    } else if (level === 2) {
+      allBombNum[0] = 99;
+      mapWidth[0] = 30;
+      mapHeight[0] = 16;
+    }
   };
   const resetButtonHundler = () => {
     resetSomeArray();
@@ -321,7 +336,7 @@ const Home = () => {
         <div className={styles.choiceLevelStrings}>カスタム</div>
       </div>
       <div className={styles.baseDisplayStyle}>
-        <div className={styles.informBoardStyle}>
+        <div className={styles.informBoardStyle} style={{ width: 30 * mapWidth[0] }}>
           <div className={styles.numberDisplayLeftStyle}>
             <div className={imageList[Number(isolatedRestBombCount[0])]} />
             <div className={imageList[Number(isolatedRestBombCount[1])]} />
@@ -342,7 +357,10 @@ const Home = () => {
             <div className={imageList[Number(isolatedSeconds[2])]} />
           </div>
         </div>
-        <div className={styles.backBoardStyle}>
+        <div
+          className={styles.backBoardStyle}
+          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight }}
+        >
           {bombMap.map((row, y) =>
             row.map((color, x) => (
               <div
@@ -388,7 +406,10 @@ const Home = () => {
           )}
         </div>
 
-        <div className={styles.frontBoardStyle}>
+        <div
+          className={styles.frontBoardStyle}
+          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight }}
+        >
           {frontBoard.map((row, y) =>
             row.map((color, x) => (
               <div
@@ -428,6 +449,7 @@ const Home = () => {
         </div>
         <div className={styles.scoreBoardStringStyle}>タイム : {seconds}秒</div>
       </div>
+      <div className={styles.sample} style={{ width: 90 * nums[2], height: 70 }} />
     </div>
   );
 };

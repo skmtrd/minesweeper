@@ -34,7 +34,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 270px;
   height: 70px;
   margin-top: 21px;
   border-color: #7f7f7f #fff #fff#7f7f7f;
@@ -47,8 +46,6 @@
   box-sizing: content-box;
   display: flex;
   flex-wrap: wrap;
-  width: 270px;
-  height: 270px;
   margin-top: 23px;
   border-color: #7f7f7f #fff #fff#7f7f7f;
   border-style: solid;
@@ -82,8 +79,6 @@
   position: absolute;
   display: flex;
   flex-wrap: wrap;
-  width: 270px;
-  height: 270px;
   margin-top: 134px;
 }
 
@@ -339,4 +334,8 @@
   color: blueviolet;
   text-decoration: underline;
   text-decoration-color: blueviolet;
+}
+
+.sample {
+  background-color: yellow;
 }
