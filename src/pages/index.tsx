@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
+import { ChildProcess } from 'child_process';
 
 const getRandomIntNumber = (min: number, max: number) => {
   return [
@@ -41,10 +42,11 @@ const imageList = [
   styles.degiNum9,
   styles.degiNum10,
 ];
+const mapWidth = [9];
+const mapHeight = [9];
 const faceImage = [0];
 const finishChecker = [0];
 const allBombNum = [10];
-const bombCount = [10];
 const frontBoardCount = [0, 0, 0];
 const clickCount: number[] = [0, 0];
 const plantPlace: number[][] = [];
@@ -54,13 +56,15 @@ const crushPoint: number[][] = [];
 const preBombCount: number[][] = [[0]];
 const restBombCount: number[] = [];
 const isolatedRestBombCount: string[] = ['', '', ''];
+const isolatedSeconds: string[] = ['', '', ''];
 const flagMode = [1];
+const currentLevel = [0];
 
 const calculateScore = (frontBoard: number[][]) => {
   frontBoardCount[0] = frontBoard.flat().filter((cell) => cell === -1).length;
   frontBoardCount[1] = frontBoard.flat().filter((cell) => cell === 0).length;
   frontBoardCount[2] = frontBoard.flat().filter((cell) => cell === 1).length;
-  preBombCount[0][0] = bombCount[0] - frontBoardCount[2];
+  preBombCount[0][0] = allBombNum[0] - frontBoardCount[2];
   if (
     frontBoardCount[0] + frontBoardCount[1] + frontBoardCount[2] - allBombNum[0] ===
     frontBoardCount[0]
@@ -68,7 +72,7 @@ const calculateScore = (frontBoard: number[][]) => {
     finishChecker[0]++;
     faceImage[0] = 1;
   }
-  restBombCount[0] = bombCount[0] - frontBoardCount[2];
+  restBombCount[0] = allBombNum[0] - frontBoardCount[2];
   isolatedRestBombCount.fill('');
   if (restBombCount[0] >= 10) {
     console.log('pass');
@@ -84,8 +88,6 @@ const calculateScore = (frontBoard: number[][]) => {
     isolatedRestBombCount[1] = String(restBombCount[0])[1];
     isolatedRestBombCount[2] = String(restBombCount[0])[2];
   }
-  console.log(restBombCount);
-  console.log(isolatedRestBombCount);
 };
 const resetSomeArray = () => {
   clickCount.fill(0);
@@ -97,10 +99,11 @@ const resetSomeArray = () => {
   finishChecker[0] = 0;
   crushPoint.length = 0;
   flagMode[0] = 1;
+  isolatedSeconds.fill('');
 };
 const plantBombs = (map: number[][], x: number, y: number) => {
   while (plantPlace.length < allBombNum[0]) {
-    const preBombPlace: number[] = getRandomIntNumber(0, 8);
+    const preBombPlace: number[] = getRandomIntNumber(0, mapWidth[0] - 1);
     if (preBombPlace[0] === y && preBombPlace[1] === x) continue;
     const checkOverlap = [0];
     for (const item of plantPlace) {
@@ -116,8 +119,8 @@ const plantBombs = (map: number[][], x: number, y: number) => {
 };
 
 const determineNumber = (map: number[][]) => {
-  for (let y = 0; y < 9; y++) {
-    for (let x = 0; x < 9; x++) {
+  for (let y = 0; y < mapHeight[0]; y++) {
+    for (let x = 0; x < mapWidth[0]; x++) {
       if (map[y][x] === 1) continue;
       const aroundBombNumber: number[] = [0];
       for (const dir of directions) {
@@ -184,6 +187,45 @@ const createBombMap = (map: number[][], x: number, y: number) => {
 };
 
 const Home = () => {
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const startTimer = () => {
+    setIsActive(true);
+  };
+  const stopTimer = () => {
+    setIsActive(false);
+  };
+  const resetTimer = () => {
+    stopTimer();
+    setSeconds(0);
+  };
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds + 0.5);
+      }, 500);
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+
+    if (seconds >= 100) {
+      isolatedSeconds[0] = String(seconds)[0];
+      isolatedSeconds[1] = String(seconds)[1];
+      isolatedSeconds[2] = String(seconds)[2];
+    } else if (seconds >= 10) {
+      isolatedSeconds[1] = '0';
+      isolatedSeconds[1] = String(seconds)[0];
+      isolatedSeconds[2] = String(seconds)[1];
+    } else if (seconds >= 0) {
+      isolatedSeconds[0] = '0';
+      isolatedSeconds[1] = '0';
+      isolatedSeconds[2] = String(seconds)[0];
+    }
+    console.log(isolatedSeconds);
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
   const [bombMap, setBombMap] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -207,8 +249,17 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
+
+  const changeLevel = (level: number) => {
+    resetSomeArray();
+    stopTimer();
+    resetTimer();
+    currentLevel[0] = level;
+  };
   const resetButtonHundler = () => {
     resetSomeArray();
+    stopTimer();
+    resetTimer();
     setBombMap(initialArray);
     setFrontBoard(initialArray);
   };
@@ -223,9 +274,10 @@ const Home = () => {
   };
 
   const clickHundler = (x: number, y: number) => {
+    startTimer();
     if (finishChecker[0] !== 0) return;
     if (flagMode[0] === -1) {
-      handleRightClick(x, y, event);
+      handleRightClick(x, y, new MouseEvent('click'));
       return;
     }
     clickCount[0]++;
@@ -233,6 +285,7 @@ const Home = () => {
     const newFrontBoard = structuredClone(frontBoard);
     const reloadedBombMap = createBombMap(newBombMap, x, y);
     const crushedFrontBoard = crushCell(reloadedBombMap, newFrontBoard, x, y);
+    if (finishChecker[0] !== 0) stopTimer();
     setBombMap(reloadedBombMap);
     setFrontBoard(crushedFrontBoard);
   };
@@ -255,6 +308,18 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.choiceLevel}>
+        <div className={styles.choiceLevelStrings} onClick={() => changeLevel(0)}>
+          初級
+        </div>
+        <div className={styles.choiceLevelStrings} onClick={() => changeLevel(1)}>
+          中級
+        </div>
+        <div className={styles.choiceLevelStrings} onClick={() => changeLevel(2)}>
+          上級
+        </div>
+        <div className={styles.choiceLevelStrings}>カスタム</div>
+      </div>
       <div className={styles.baseDisplayStyle}>
         <div className={styles.informBoardStyle}>
           <div className={styles.numberDisplayLeftStyle}>
@@ -271,7 +336,11 @@ const Home = () => {
               }}
             />
           </div>
-          <div className={styles.numberDisplayRightStyle} />
+          <div className={styles.numberDisplayRightStyle}>
+            <div className={imageList[Number(isolatedSeconds[0])]} />
+            <div className={imageList[Number(isolatedSeconds[1])]} />
+            <div className={imageList[Number(isolatedSeconds[2])]} />
+          </div>
         </div>
         <div className={styles.backBoardStyle}>
           {bombMap.map((row, y) =>
@@ -357,6 +426,7 @@ const Home = () => {
         <div className={styles.scoreBoardStringStyle}>
           クリック数 : {clickCount[0]}+{clickCount[1]}
         </div>
+        <div className={styles.scoreBoardStringStyle}>タイム : {seconds}秒</div>
       </div>
     </div>
   );
