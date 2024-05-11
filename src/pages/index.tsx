@@ -7,7 +7,6 @@ const getRandomIntNumber = (min: number, max: number) => {
     Math.floor(Math.random() * (max - min + 1)) + min,
   ];
 };
-const n = [0];
 const initialArray = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -55,6 +54,7 @@ const crushPoint: number[][] = [];
 const preBombCount: number[][] = [[0]];
 const restBombCount: number[] = [];
 const isolatedRestBombCount: string[] = ['', '', ''];
+const flagMode = [1];
 
 const calculateScore = (frontBoard: number[][]) => {
   frontBoardCount[0] = frontBoard.flat().filter((cell) => cell === -1).length;
@@ -96,6 +96,7 @@ const resetSomeArray = () => {
   faceImage[0] = 0;
   finishChecker[0] = 0;
   crushPoint.length = 0;
+  flagMode[0] = 1;
 };
 const plantBombs = (map: number[][], x: number, y: number) => {
   while (plantPlace.length < allBombNum[0]) {
@@ -206,15 +207,27 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
-  console.log(n[0]);
   const resetButtonHundler = () => {
     resetSomeArray();
     setBombMap(initialArray);
     setFrontBoard(initialArray);
   };
 
+  const toggleFlagMode = () => {
+    const newBombMap = structuredClone(bombMap);
+    const newFrontBoard = structuredClone(frontBoard);
+    flagMode[0] *= -1;
+    console.log(flagMode);
+    setBombMap(newBombMap);
+    setFrontBoard(newFrontBoard);
+  };
+
   const clickHundler = (x: number, y: number) => {
     if (finishChecker[0] !== 0) return;
+    if (flagMode[0] === -1) {
+      handleRightClick(x, y, event);
+      return;
+    }
     clickCount[0]++;
     const newBombMap = structuredClone(bombMap);
     const newFrontBoard = structuredClone(frontBoard);
@@ -326,6 +339,16 @@ const Home = () => {
             )),
           )}
         </div>
+      </div>
+      <div
+        className={styles.btn}
+        onClick={() => toggleFlagMode()}
+        style={{
+          borderColor: flagMode[0] === 1 ? '' : '#7f7f7f #fff #fff#7f7f7f',
+          backgroundColor: flagMode[0] === 1 ? '' : '#a3a3a3',
+        }}
+      >
+        <div className={styles.modeImageStyle} style={{ backgroundPosition: `-198px 0px` }} />
       </div>
       <div
         className={styles.scoreBoardStyle}
