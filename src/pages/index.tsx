@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
-
-const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+import NumberInput from './NumberInput';
 
 const getRandomIntNumber = (min: number, max: number) => {
   return [
@@ -10,6 +9,13 @@ const getRandomIntNumber = (min: number, max: number) => {
   ];
 };
 
+const createCustomMap = (width: number, height: number) => {
+  const customMap = [];
+  for (let i = 0; i < height; i++) {
+    customMap.push(Array(width).fill(0));
+  }
+  return customMap;
+};
 const maps = [
   [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -91,7 +97,6 @@ const maps = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
 ];
-
 const directions = [
   [1, 0],
   [1, 1],
@@ -180,7 +185,7 @@ const resetSomeArray = () => {
 const plantBombs = (map: number[][], x: number, y: number) => {
   while (plantPlace.length < allBombNum[0]) {
     const preBombPlace: number[] = getRandomIntNumber(0, mapWidth[0] - 1);
-    if (preBombPlace[0] >= 16) continue;
+    if (preBombPlace[0] >= mapHeight[0]) continue;
     if (preBombPlace[0] === y && preBombPlace[1] === x) continue;
     const checkOverlap = [0];
     for (const item of plantPlace) {
@@ -266,6 +271,10 @@ const createBombMap = (map: number[][], x: number, y: number) => {
 };
 
 const Home = () => {
+  const [numberWidth, setNumberWidth] = useState('');
+  const [numberHeight, setNumberHeight] = useState('');
+  const [numberBomb, setNumberBomb] = useState('');
+
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const startTimer = () => {
@@ -328,6 +337,30 @@ const Home = () => {
   ]);
   initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
 
+  const handleNumberChangeWidth = (value: string) => {
+    console.log(value);
+    setNumberWidth(value);
+  };
+  const handleNumberChangeHeight = (value: string) => {
+    console.log(value);
+    setNumberHeight(value);
+  };
+  const handleNumberChangeBomb = (value: string) => {
+    console.log(value);
+    setNumberBomb(value);
+  };
+  const createCustomMapClick = () => {
+    if (Number(numberWidth) < 1 || Number(numberHeight) < 1 || Number(numberBomb) < 1) return;
+    resetSomeArray();
+    stopTimer();
+    resetTimer();
+    mapWidth[0] = Number(numberWidth);
+    mapHeight[0] = Number(numberHeight);
+    allBombNum[0] = Number(numberBomb);
+    maps[3] = createCustomMap(mapWidth[0], mapHeight[0]);
+    setBombMap(maps[3]);
+    setFrontBoard(maps[3]);
+  };
   const changeLevel = (level: number) => {
     resetSomeArray();
     stopTimer();
@@ -405,6 +438,23 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+      <div
+        className={styles.numberInputBoxStyle}
+        style={{ visibility: currentLevel[0] === 3 ? 'visible' : 'hidden' }}
+      >
+        <div className={styles.numberInputBoxStringsStyle}>
+          <div>幅</div>
+          <div>高さ</div>
+          <div>爆弾</div>
+        </div>
+        <NumberInput onChange={handleNumberChangeWidth} />
+        <NumberInput onChange={handleNumberChangeHeight} />
+        <NumberInput onChange={handleNumberChangeBomb} />
+        <div className={styles.refreshButton} onClick={() => createCustomMapClick()}>
+          更新
+        </div>
+      </div>
+
       <div className={styles.choiceLevel}>
         <div className={styles.choiceLevelStrings} onClick={() => changeLevel(0)}>
           初級

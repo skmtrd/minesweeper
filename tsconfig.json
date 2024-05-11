@@ -22,7 +22,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "*.js",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "src/pages/NumberInput"
   ],
   "exclude": ["node_modules"]
 }
