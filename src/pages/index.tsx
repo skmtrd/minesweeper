@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
-import { ChildProcess } from 'child_process';
 
 const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -10,17 +9,89 @@ const getRandomIntNumber = (min: number, max: number) => {
     Math.floor(Math.random() * (max - min + 1)) + min,
   ];
 };
-const initialArray = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+const maps = [
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
 ];
+
 const directions = [
   [1, 0],
   [1, 1],
@@ -76,8 +147,11 @@ const calculateScore = (frontBoard: number[][]) => {
   }
   restBombCount[0] = allBombNum[0] - frontBoardCount[2];
   isolatedRestBombCount.fill('');
-  if (restBombCount[0] >= 10) {
-    console.log('pass');
+  if (restBombCount[0] >= 100) {
+    isolatedRestBombCount[0] = String(restBombCount[0])[0];
+    isolatedRestBombCount[1] = String(restBombCount[0])[1];
+    isolatedRestBombCount[2] = String(restBombCount[0])[2];
+  } else if (restBombCount[0] >= 10) {
     isolatedRestBombCount[1] = String(restBombCount[0])[0];
     isolatedRestBombCount[2] = String(restBombCount[0])[1];
   } else if (restBombCount[0] < 10 && restBombCount[0] >= 0) {
@@ -106,6 +180,7 @@ const resetSomeArray = () => {
 const plantBombs = (map: number[][], x: number, y: number) => {
   while (plantPlace.length < allBombNum[0]) {
     const preBombPlace: number[] = getRandomIntNumber(0, mapWidth[0] - 1);
+    if (preBombPlace[0] >= 16) continue;
     if (preBombPlace[0] === y && preBombPlace[1] === x) continue;
     const checkOverlap = [0];
     for (const item of plantPlace) {
@@ -114,6 +189,7 @@ const plantBombs = (map: number[][], x: number, y: number) => {
     if (checkOverlap[0] !== 0) continue;
     plantPlace.push(preBombPlace);
   }
+  console.log(plantPlace);
   for (const bomb of plantPlace) {
     map[bomb[0]][bomb[1]] = 1;
   }
@@ -182,8 +258,9 @@ const crushByRecursive = (map: number[][], x: number, y: number) => {
 };
 
 const createBombMap = (map: number[][], x: number, y: number) => {
-  if (initializeCount[0] !== 81) return map;
+  if (initializeCount[0] !== mapHeight[0] * mapWidth[0]) return map;
   const bombedMap = plantBombs(map, x, y);
+  console.log(bombedMap);
   const numberedMap = determineNumber(bombedMap);
   return numberedMap;
 };
@@ -224,7 +301,6 @@ const Home = () => {
       isolatedSeconds[1] = '0';
       isolatedSeconds[2] = String(seconds)[0];
     }
-    console.log(isolatedSeconds);
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
@@ -269,21 +345,26 @@ const Home = () => {
       allBombNum[0] = 99;
       mapWidth[0] = 30;
       mapHeight[0] = 16;
+    } else if (level === 3) {
+      allBombNum[0] = 150;
+      mapWidth[0] = 30;
+      mapHeight[0] = 30;
     }
+    setBombMap(maps[currentLevel[0]]);
+    setFrontBoard(maps[currentLevel[0]]);
   };
   const resetButtonHundler = () => {
     resetSomeArray();
     stopTimer();
     resetTimer();
-    setBombMap(initialArray);
-    setFrontBoard(initialArray);
+    setBombMap(maps[currentLevel[0]]);
+    setFrontBoard(maps[currentLevel[0]]);
   };
 
   const toggleFlagMode = () => {
     const newBombMap = structuredClone(bombMap);
     const newFrontBoard = structuredClone(frontBoard);
     flagMode[0] *= -1;
-    console.log(flagMode);
     setBombMap(newBombMap);
     setFrontBoard(newFrontBoard);
   };
@@ -300,6 +381,7 @@ const Home = () => {
     const newFrontBoard = structuredClone(frontBoard);
     const reloadedBombMap = createBombMap(newBombMap, x, y);
     const crushedFrontBoard = crushCell(reloadedBombMap, newFrontBoard, x, y);
+    calculateScore(crushedFrontBoard);
     if (finishChecker[0] !== 0) stopTimer();
     setBombMap(reloadedBombMap);
     setFrontBoard(crushedFrontBoard);
@@ -333,9 +415,14 @@ const Home = () => {
         <div className={styles.choiceLevelStrings} onClick={() => changeLevel(2)}>
           上級
         </div>
-        <div className={styles.choiceLevelStrings}>カスタム</div>
+        <div className={styles.choiceLevelStrings} onClick={() => changeLevel(3)}>
+          カスタム
+        </div>
       </div>
-      <div className={styles.baseDisplayStyle}>
+      <div
+        className={styles.baseDisplayStyle}
+        style={{ width: 50 + 30 * mapWidth[0], height: 150 + 30 * mapHeight[0] }}
+      >
         <div className={styles.informBoardStyle} style={{ width: 30 * mapWidth[0] }}>
           <div className={styles.numberDisplayLeftStyle}>
             <div className={imageList[Number(isolatedRestBombCount[0])]} />
@@ -359,7 +446,7 @@ const Home = () => {
         </div>
         <div
           className={styles.backBoardStyle}
-          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight }}
+          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight[0] }}
         >
           {bombMap.map((row, y) =>
             row.map((color, x) => (
@@ -408,7 +495,7 @@ const Home = () => {
 
         <div
           className={styles.frontBoardStyle}
-          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight }}
+          style={{ width: 30 * mapWidth[0], height: 30 * mapHeight[0] }}
         >
           {frontBoard.map((row, y) =>
             row.map((color, x) => (
@@ -449,7 +536,6 @@ const Home = () => {
         </div>
         <div className={styles.scoreBoardStringStyle}>タイム : {seconds}秒</div>
       </div>
-      <div className={styles.sample} style={{ width: 90 * nums[2], height: 70 }} />
     </div>
   );
 };
