@@ -206,9 +206,8 @@
 }
 
 .btn:active {
-  top: 12px;
-  left: -108px;
   border-color: #7f7f7f;
+  transform: translateY(2px) translateX(2px);
 }
 
 .modeImageStyle {
