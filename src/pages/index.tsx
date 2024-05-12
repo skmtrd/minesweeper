@@ -270,7 +270,11 @@ const crushByRecursive = (map: number[][], x: number, y: number) => {
 };
 
 const createBombMap = (map: number[][], board: number[][], x: number, y: number) => {
-  if (board.flat().filter((cell) => cell === 0).length !== mapHeight[0] * mapWidth[0]) return map;
+  if (
+    board.flat().filter((cell) => cell === 0 || cell === 1 || cell === 2).length !==
+    mapHeight[0] * mapWidth[0]
+  )
+    return map;
   const bombedMap = plantBombs(map, x, y);
   const numberedMap = determineNumber(bombedMap);
   return numberedMap;
