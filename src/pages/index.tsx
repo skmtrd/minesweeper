@@ -129,7 +129,6 @@ const frontBoardCount = [0, 0, 0];
 const clickCount: number[] = [0, 0];
 const plantPlace: number[][] = [];
 const explodedCell: number[][] = [[]];
-const initializeCount = [0];
 const crushPoint: number[][] = [];
 const preBombCount: number[][] = [[0]];
 const restBombCount: number[] = [];
@@ -175,7 +174,6 @@ const resetSomeArray = () => {
   plantPlace.length = 0;
   explodedCell.length = 0;
   explodedCell[0] = [];
-  initializeCount[0] = 0;
   faceImage[0] = 0;
   finishChecker[0] = 0;
   crushPoint.length = 0;
@@ -204,7 +202,6 @@ const plantBombs = (map: number[][], x: number, y: number) => {
     if (checkOverlap[0] !== 0) continue;
     plantPlace.push(preBombPlace);
   }
-  console.log(plantPlace);
   for (const bomb of plantPlace) {
     map[bomb[0]][bomb[1]] = 1;
   }
@@ -272,10 +269,9 @@ const crushByRecursive = (map: number[][], x: number, y: number) => {
   return;
 };
 
-const createBombMap = (map: number[][], x: number, y: number) => {
-  if (initializeCount[0] !== mapHeight[0] * mapWidth[0]) return map;
+const createBombMap = (map: number[][], board: number[][], x: number, y: number) => {
+  if (board.flat().filter((cell) => cell === 0).length !== mapHeight[0] * mapWidth[0]) return map;
   const bombedMap = plantBombs(map, x, y);
-  console.log(bombedMap);
   const numberedMap = determineNumber(bombedMap);
   return numberedMap;
 };
@@ -345,18 +341,14 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-  initializeCount[0] = bombMap.flat().filter((cell) => cell === 0).length;
 
   const handleNumberChangeWidth = (value: string) => {
-    console.log(value);
     setNumberWidth(value);
   };
   const handleNumberChangeHeight = (value: string) => {
-    console.log(value);
     setNumberHeight(value);
   };
   const handleNumberChangeBomb = (value: string) => {
-    console.log(value);
     setNumberBomb(value);
   };
   const createCustomMapClick = () => {
@@ -419,11 +411,10 @@ const Home = () => {
       handleRightClick(x, y, new MouseEvent('click'));
       return;
     }
-    if (frontBoard[y][x] === 1) return;
     clickCount[0]++;
     const newBombMap = structuredClone(bombMap);
     const newFrontBoard = structuredClone(frontBoard);
-    const reloadedBombMap = createBombMap(newBombMap, x, y);
+    const reloadedBombMap = createBombMap(newBombMap, frontBoard, x, y);
     const crushedFrontBoard = crushCell(reloadedBombMap, newFrontBoard, x, y);
     calculateScore(crushedFrontBoard);
     if (finishChecker[0] !== 0) stopTimer();
